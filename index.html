@@ -26,6 +26,11 @@
 				body {
 						background: rgb(198, 169, 255);
 				}
+				.titleContainer textarea{
+					width: 115px;
+					margin-top: 20px;
+					resize: none;
+				}
 				.container {
 						padding-top: 55px;
 						width: 1170px !important;
@@ -94,7 +99,15 @@
 				.opened{
 					background: #83FF89;
 				}
-				.deletBtn .glyphicon{
+				.titleContainer .glyphicon-floppy-disk{
+					background: rgba(255, 40, 40, 0.55);
+					padding: 2px 0;
+					text-align: center;
+					float: none;
+					width: 100%;
+					color: #fff;
+				}
+				.delete .glyphicon{
 					position: relative;
 					right: -101px;
 					top: 20px;
@@ -263,7 +276,7 @@
 							<div class="col-md-10 col-md-offset-1">
 									<div id='newEvent' class="event-form hide">
 											<p>Date: <span id='date'></span></p>
-										 	<input id='eventTitle' type="text" size="20">
+										 	<input id='eventTitle' type="text">
 										 	<button id='addEvent' type="button" class="btn btn-primary btn-xs">Добавить</button>
 									</div>
 									<div id='calendar'></div>

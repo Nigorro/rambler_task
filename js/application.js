@@ -2,6 +2,9 @@ $(function () {
     $('input').on('click', function (){
         $('input').trigger("focus");
     });
+    $('textarea').on('click', function (){
+        $('textarea').trigger("focus");
+    });
     $('#start').on('click', function (){
         i = 0;
         if ($('#start').data('start') == '0') {
@@ -103,7 +106,9 @@ $(function () {
         events: {
             'click': 'showModal',
             'click .prev ': 'showContainer', 
-            'click .deletBtn': 'deleteEvent'
+            'click .deletBtn': 'deleteEvent',
+            'click p': 'snowEdit',
+            'click .saveEditble': 'editEvent'
         },
         initialize: function () {
             _.bindAll(this, 'render');
@@ -153,11 +158,41 @@ $(function () {
             el.data('check', '');
             $(e.target).parent().parent().parent().remove();
             this.collection.each(function( item ){
+                console.log(item.collection.get('title'));
                 if(item.get('date') === date){
                     console.log('bingo');
                     item.destroy();
                 }
             });
+        },
+        editEvent: function(e){
+            el = $(e.target).parent().parent().parent();
+            text = $(e.target).parent().find('textarea').text();
+            date = el.data('date');
+            this.collection.each(function( item ){
+                // item.get('title');
+                if(item.get('date') === date){
+                    console.log('bingo');
+                    item.set('title', text);
+                }
+            });
+            $(e.target).parent().find('textarea').remove();
+            $(e.target).parent().find('.saveEditble').remove();
+
+            el.find('p').css('display', 'block');
+
+            
+        },
+        snowEdit: function(e){
+            el = $(e.target);
+            console.log(el);
+            template = '<input id="edit" type="text" size="20 value = ' +  + '>1';
+            template = '<textarea>'+el.text()+'</textarea><span class="saveEditble glyphicon glyphicon-floppy-disk"> Сохранить</span>'
+            $(el[0]).after(template);
+            $(el[0]).css('display', 'none');
+            $('textarea').trigger("focus");
+            // el.css('display', 'none');
+            
         },
         setModal: function (pos, date) {
             var modal = $('#newEvent');
@@ -196,12 +231,15 @@ $(function () {
     events.bind('remove', function (e){
         console.log('Element was removed!');
     });
+    events.bind('set', function (e){
+        console.log('Collection was edit!');
+    });
     events.bind('add', function (e){
         date = e.attributes.date;
         title = e.attributes.title;
         template = "<div class='eventContainer'>"+
                 "<div class='prev closed'>+</div>"+
-                    "<div class='titleContainer'> <div class='deletBtn'><span class='glyphicon glyphicon-trash'></span></div> <p>" +
+                    "<div class='titleContainer'> <div class='delete'><span class='deletBtn glyphicon glyphicon-trash'></span></div> <p>" +
                      title + "</p>"+
                     "</div></div>"
         $('.fc-day-number').each(function (index) {
